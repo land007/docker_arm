@@ -43,4 +43,4 @@ RUN echo "/check.sh /node" >> /start.sh && \
 #RUN echo "supervisor -w /node/ /node/server.js" >> /start.sh && \
 	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
 
-#docker stop ubuntu-node-arm ; docker rm ubuntu-node-arm ; docker run -it --privileged -v ~/docker/ubuntu-node-arm:/node -p 80:80 --name ubuntu-node-arm land007/ubuntu-node-arm:latest
+#sudo docker rm -f ubuntu-node-arm ; sudo docker run -it --privileged -v ~/docker/ubuntu-node-arm:/node -p 80:80 --name ubuntu-node-arm land007/ubuntu-node-arm:latest bash -c "/check.sh /node && supervisor -w /node/ /node/server.js"
