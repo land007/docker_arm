@@ -1,8 +1,10 @@
-FROM land007/ubuntu-build-arm:latest
+#FROM land007/ubuntu-build-arm:latest
+FROM ubuntu:latest
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
-RUN apt-get update && apt-get install -y python ffmpeg && apt-get clean
+#RUN apt-get update && apt-get install -y python ffmpeg && apt-get clean
+RUN apt-get update && apt-get install -y net-tools iputils-ping wget && apt-get clean
 RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 ENV NVM_DIR=/root/.nvm \
 #	SHIPPABLE_NODE_VERSION=v8.11.1
@@ -34,13 +36,24 @@ VOLUME ["/node"]
 
 RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
 	echo $(date "+%Y-%m-%d_%H:%M:%S") > /.image_time && \
-	echo "land007/ubuntu-node" >> /.image_names && \
-	echo "land007/ubuntu-node" > /.image_name
+	echo "land007/ubuntu-node-min" >> /.image_names && \
+	echo "land007/ubuntu-node-min" > /.image_name
 
 EXPOSE 80/tcp
 #CMD /check.sh /node ; /etc/init.d/ssh start ; /node/start.sh
 RUN echo "/check.sh /node" >> /start.sh && \
 #RUN echo "supervisor -w /node/ /node/server.js" >> /start.sh && \
-	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
+#	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
+	echo "supervisor -w /node/ /node/server.js" >> /start.sh
+RUN chmod +x /start.sh
+CMD /start.sh
 
+#> docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/ubuntu-node-min --push .
+#> docker buildx build --platform linux/arm/v7 -t land007/ubuntu-node-arm --load .
+#> docker buildx build --platform linux/arm/v7 -t land007/ubuntu-node-min --load .
+#> docker buildx build --platform linux/arm64 -t land007/ubuntu-node-min --load .
+#> docker buildx build --platform linux/amd64 -t land007/ubuntu-node-min --load .
+#> docker run --rm -it land007/ubuntu-node-arm bash
+#> docker run --rm -it land007/ubuntu-node-min bash
 #sudo docker rm -f ubuntu-node-arm ; sudo docker run -it --privileged -v ~/docker/ubuntu-node-arm:/node -p 22080:80 --name ubuntu-node-arm land007/ubuntu-node-arm:latest bash -c "/check.sh /node && supervisor -w /node/ /node/server.js"
+#sudo docker rm -f ubuntu-node-min ; sudo docker run -it --privileged --restart=always -v ~/docker/ubuntu-node-min:/node -p 80:80 --name ubuntu-node-min land007/ubuntu-node-min:latest

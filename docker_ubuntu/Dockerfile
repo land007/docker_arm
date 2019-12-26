@@ -45,7 +45,9 @@ EXPOSE 20022/tcp
 #ENTRYPOINT /etc/init.d/ssh start && bash
 CMD /etc/init.d/ssh start && /start.sh && bash
 
-#> docker buildx build  --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/ubuntu-all --push .
+#> docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/ubuntu-all --push .
+#> docker buildx build --platform linux/arm/v7 -t land007/ubuntu-arm --load .
+#> docker run --rm -it land007/ubuntu-arm bash
 #18.04
 #curl -d "v=1&t=pageview&tid=UA-10056144-4&cid=&dh=docker.qhkly.com&dp=land007/ubuntu&dt={start_time:2019-05-26_11:07:12,image_time:2019-05-26_11:02:48}" https://www.google-analytics.com/collect
 #docker stop ubuntu1 ; docker rm ubuntu1; docker run -it --privileged --name ubuntu1 land007/ubuntu:latest
