@@ -1,0 +1,11 @@
+{
+    "server":"SERVER",
+    "server_port":PORT,
+    "local_address": "0.0.0.0",
+    "local_port":1080,
+    "password":"PASSWORD",
+    "timeout":300,
+    "method":"METHOD",
+    "fast_open": true,
+    "workers": 1
+}
